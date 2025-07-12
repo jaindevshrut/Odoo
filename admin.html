@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <title>Admin Panel - ReWear</title> -->
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+<body class="admin-body">
+    <div class="floating-clothes">
+        <div class="clothing-item">👗</div>
+        <div class="clothing-item">👚</div>
+        <div class="clothing-item">👖</div>
+        <div class="clothing-item">👔</div>
+        <div class="clothing-item">🧥</div>
+        <div class="clothing-item">👕</div>
+        <div class="clothing-item">🩳</div>
+        <div class="clothing-item">🧣</div>
+        <div class="clothing-item">👜</div>
+        <div class="clothing-item">👠</div>
+    </div>
+
+    <div class="admin-container">
+        <!-- Header -->
+        <header class="admin-header">
+            <div class="admin-logo">
+                <h1>👔 ReWear Admin Panel</h1>
+                <span class="admin-tagline">Manage Platform Content</span>
+            </div>
+            <div class="admin-user-info">
+                <span class="admin-welcome">Welcome, Admin</span>
+                <button class="logout-btn">🚪 Logout</button>
+            </div>
+        </header>
+
+        <!-- Sidebar Navigation -->
+        <nav class="admin-sidebar">
+            <ul class="admin-nav-menu">
+                <li><a href="#pending-items" class="admin-nav-link active" data-section="pending-items">⏳ Pending Items</a></li>
+                <li><a href="#all-items" class="admin-nav-link" data-section="all-items">👕 All Items</a></li>
+                <li><a href="#user-reports" class="admin-nav-link" data-section="user-reports">📊 User Reports</a></li>
+            </ul>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="admin-main-content">
+            <!-- Statistics Section -->
+            <section class="admin-stats-section">
+                <div class="admin-stats-grid">
+                    <div class="admin-stat-card">
+                        <div class="stat-icon">👥</div>
+                        <div class="stat-details">
+                            <h3 class="stat-title">Total Users</h3>
+                            <p class="stat-number">1,245</p>
+                        </div>
+                    </div>
+                    <div class="admin-stat-card">
+                        <div class="stat-icon">🔄</div>
+                        <div class="stat-details">
+                            <h3 class="stat-title">Active Swaps</h3>
+                            <p class="stat-number">89</p>
+                        </div>
+                    </div>
+                    <div class="admin-stat-card">
+                        <div class="stat-icon">⏳</div>
+                        <div class="stat-details">
+                            <h3 class="stat-title">Items Pending</h3>
+                            <p class="stat-number">24</p>
+                        </div>
+                    </div>
+                    <div class="admin-stat-card">
+                        <div class="stat-icon">📦</div>
+                        <div class="stat-details">
+                            <h3 class="stat-title">Total Items</h3>
+                            <p class="stat-number">3,567</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Pending Items Section -->
+            <section class="admin-content-section active" id="pending-items-section">
+                <div class="section-header">
+                    <h2 class="section-title">Pending Items for Approval</h2>
+                    <div class="section-controls">
+                        <div class="search-filter-container">
+                            <input type="text" class="search-input" placeholder="Search items...">
+                            <select class="filter-select" id="category-filter">
+                                <option value="">All Categories</option>
+                                <option value="shirts">Shirts</option>
+                                <option value="pants">Pants</option>
+                                <option value="dresses">Dresses</option>
+                                <option value="jackets">Jackets</option>
+                                <option value="accessories">Accessories</option>
+                            </select>
+                            <select class="filter-select" id="status-filter">
+                                <option value="">All Status</option>
+                                <option value="pending">Pending</option>
+                                <option value="approved">Approved</option>
+                                <option value="rejected">Rejected</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pending-items-grid">
+                    <div class="admin-card item-card">
+                        <div class="item-image-container">
+                            <img src="https://via.placeholder.com/200x200/667eea/ffffff?text=👕" alt="Vintage T-Shirt" class="item-image">
+                            <span class="item-category-badge">Shirts</span>
+                        </div>
+                        <div class="item-details">
+                            <h3 class="item-title">Vintage Band T-Shirt</h3>
+                            <p class="item-description">Classic rock band tee from the 90s, excellent condition</p>
+                            <div class="item-meta">
+                                <span class="uploader-info">
+                                    <span class="uploader-label">Uploaded by:</span>
+                                    <span class="uploader-name">Sarah Johnson</span>
+                                </span>
+                                <span class="upload-date">March 15, 2024</span>
+                            </div>
+                            <div class="item-status">
+                                <span class="status-badge pending">Pending Review</span>
+                            </div>
+                        </div>
+                        <div class="item-actions">
+                            <button class="btn-approve" onclick="approveItem(1)">✅ Approve</button>
+                            <button class="btn-reject" onclick="rejectItem(1)">❌ Reject</button>
+                            <button class="btn-view-details" onclick="viewDetails(1)">👁️ View Details</button>
+                        </div>
+                    </div>
+
+                    <div class="admin-card item-card">
+                        <div class="item-image-container">
+                            <img src="https://via.placeholder.com/200x200/764ba2/ffffff?text=👗" alt="Summer Dress" class="item-image">
+                            <span class="item-category-badge">Dresses</span>
+                        </div>
+                        <div class="item-details">
+                            <h3 class="item-title">Floral Summer Dress</h3>
+                            <p class="item-description">Light and breezy dress perfect for summer occasions</p>
+                            <div class="item-meta">
+                                <span class="uploader-info">
+                                    <span class="uploader-label">Uploaded by:</span>
+                                    <span class="uploader-name">Emma Wilson</span>
+                                </span>
+                                <span class="upload-date">March 14, 2024</span>
+                            </div>
+                            <div class="item-status">
+                                <span class="status-badge pending">Pending Review</span>
+                            </div>
+                        </div>
+                        <div class="item-actions">
+                            <button class="btn-approve" onclick="approveItem(2)">✅ Approve</button>
+                            <button class="btn-reject" onclick="rejectItem(2)">❌ Reject</button>
+                            <button class="btn-view-details" onclick="viewDetails(2)">👁️ View Details</button>
+                        </div>
+                    </div>
+
+                    <div class="admin-card item-card">
+                        <div class="item-image-container">
+                            <img src="https://via.placeholder.com/200x200/8b5cf6/ffffff?text=👖" alt="Denim Jeans" class="item-image">
+                            <span class="item-category-badge">Pants</span>
+                        </div>
+                        <div class="item-details">
+                            <h3 class="item-title">High-Waist Denim Jeans</h3>
+                            <p class="item-description">Trendy high-waist jeans in excellent condition</p>
+                            <div class="item-meta">
+                                <span class="uploader-info">
+                                    <span class="uploader-label">Uploaded by:</span>
+                                    <span class="uploader-name">Alex Chen</span>
+                                </span>
+                                <span class="upload-date">March 13, 2024</span>
+                            </div>
+                            <div class="item-status">
+                                <span class="status-badge pending">Pending Review</span>
+                            </div>
+                        </div>
+                        <div class="item-actions">
+                            <button class="btn-approve" onclick="approveItem(3)">✅ Approve</button>
+                            <button class="btn-reject" onclick="rejectItem(3)">❌ Reject</button>
+                            <button class="btn-view-details" onclick="viewDetails(3)">👁️ View Details</button>
+                        </div>
+                    </div>
+
+                    <div class="admin-card item-card">
+                        <div class="item-image-container">
+                            <img src="https://via.placeholder.com/200x200/ec4899/ffffff?text=🧥" alt="Leather Jacket" class="item-image">
+                            <span class="item-category-badge">Jackets</span>
+                        </div>
+                        <div class="item-details">
+                            <h3 class="item-title">Black Leather Jacket</h3>
+                            <p class="item-description">Classic leather jacket with minimal wear</p>
+                            <div class="item-meta">
+                                <span class="uploader-info">
+                                    <span class="uploader-label">Uploaded by:</span>
+                                    <span class="uploader-name">Mike Rodriguez</span>
+                                </span>
+                                <span class="upload-date">March 12, 2024</span>
+                            </div>
+                            <div class="item-status">
+                                <span class="status-badge pending">Pending Review</span>
+                            </div>
+                        </div>
+                        <div class="item-actions">
+                            <button class="btn-approve" onclick="approveItem(4)">✅ Approve</button>
+                            <button class="btn-reject" onclick="rejectItem(4)">❌ Reject</button>
+                            <button class="btn-view-details" onclick="viewDetails(4)">👁️ View Details</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- All Items Section -->
+            <section class="admin-content-section" id="all-items-section">
+                <div class="section-header">
+                    <h2 class="section-title">All Items</h2>
+                </div>
+                <div class="all-items-table-container">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>Image</th>
+                                <th>Title</th>
+                                <th>Category</th>
+                                <th>Uploader</th>
+                                <th>Status</th>
+                                <th>Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><img src="https://via.placeholder.com/50x50/667eea/ffffff?text=👕" alt="Item" class="table-item-image"></td>
+                                <td>Vintage Band T-Shirt</td>
+                                <td>Shirts</td>
+                                <td>Sarah Johnson</td>
+                                <td><span class="status-badge approved">Approved</span></td>
+                                <td>Mar 15, 2024</td>
+                                <td>
+                                    <button class="btn-table-action btn-edit">Edit</button>
+                                    <button class="btn-table-action btn-delete">Delete</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><img src="https://via.placeholder.com/50x50/764ba2/ffffff?text=👗" alt="Item" class="table-item-image"></td>
+                                <td>Floral Summer Dress</td>
+                                <td>Dresses</td>
+                                <td>Emma Wilson</td>
+                                <td><span class="status-badge pending">Pending</span></td>
+                                <td>Mar 14, 2024</td>
+                                <td>
+                                    <button class="btn-table-action btn-approve">Approve</button>
+                                    <button class="btn-table-action btn-reject">Reject</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><img src="https://via.placeholder.com/50x50/8b5cf6/ffffff?text=👖" alt="Item" class="table-item-image"></td>
+                                <td>High-Waist Denim Jeans</td>
+                                <td>Pants</td>
+                                <td>Alex Chen</td>
+                                <td><span class="status-badge rejected">Rejected</span></td>
+                                <td>Mar 13, 2024</td>
+                                <td>
+                                    <button class="btn-table-action btn-edit">Edit</button>
+                                    <button class="btn-table-action btn-delete">Delete</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- User Reports Section -->
+            <section class="admin-content-section" id="user-reports-section">
+                <div class="section-header">
+                    <h2 class="section-title">User Reports</h2>
+                </div>
+                <div class="reports-grid">
+                    <div class="admin-card report-card">
+                        <div class="report-header">
+                            <h3 class="report-title">User Activity Report</h3>
+                            <span class="report-date">Last 30 days</span>
+                        </div>
+                        <div class="report-stats">
+                            <div class="report-stat">
+                                <span class="report-stat-label">New Users</span>
+                                <span class="report-stat-value">147</span>
+                            </div>
+                            <div class="report-stat">
+                                <span class="report-stat-label">Active Users</span>
+                                <span class="report-stat-value">892</span>
+                            </div>
+                            <div class="report-stat">
+                                <span class="report-stat-label">Items Posted</span>
+                                <span class="report-stat-value">324</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="admin-card report-card">
+                        <div class="report-header">
+                            <h3 class="report-title">Swap Activity Report</h3>
+                            <span class="report-date">Last 7 days</span>
+                        </div>
+                        <div class="report-stats">
+                            <div class="report-stat">
+                                <span class="report-stat-label">Completed Swaps</span>
+                                <span class="report-stat-value">45</span>
+                            </div>
+                            <div class="report-stat">
+                                <span class="report-stat-label">Pending Swaps</span>
+                                <span class="report-stat-value">23</span>
+                            </div>
+                            <div class="report-stat">
+                                <span class="report-stat-label">Cancelled Swaps</span>
+                                <span class="report-stat-value">8</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        // Mobile menu toggle
+        document.addEventListener('DOMContentLoaded', function() {
+            const header = document.querySelector('.admin-header');
+            const sidebar = document.querySelector('.admin-sidebar');
+            
+            // Add click event to the hamburger menu (mobile only)
+            header.addEventListener('click', function(e) {
+                if (window.innerWidth <= 768 && e.target === header) {
+                    sidebar.classList.toggle('active');
+                }
+            });
+            
+            // Close sidebar when clicking outside on mobile
+            document.addEventListener('click', function(e) {
+                if (window.innerWidth <= 768 && 
+                    !sidebar.contains(e.target) && 
+                    !header.contains(e.target) &&
+                    sidebar.classList.contains('active')) {
+                    sidebar.classList.remove('active');
+                }
+            });
+        });
+
+        // Navigation functionality
+        document.querySelectorAll('.admin-nav-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetSection = link.dataset.section;
+                
+                // Remove active class from all links and sections
+                document.querySelectorAll('.admin-nav-link').forEach(l => l.classList.remove('active'));
+                document.querySelectorAll('.admin-content-section').forEach(s => s.classList.remove('active'));
+                
+                // Add active class to clicked link and corresponding section
+                link.classList.add('active');
+                document.getElementById(targetSection + '-section').classList.add('active');
+                
+                // Close mobile menu if open
+                if (window.innerWidth <= 768) {
+                    document.querySelector('.admin-sidebar').classList.remove('active');
+                }
+            });
+        });
+
+        // Search functionality
+        document.querySelector('.search-input').addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            filterItems();
+        });
+
+        // Filter functionality
+        document.querySelectorAll('.filter-select').forEach(select => {
+            select.addEventListener('change', () => {
+                filterItems();
+            });
+        });
+
+        function filterItems() {
+            const searchTerm = document.querySelector('.search-input').value.toLowerCase();
+            const categoryFilter = document.getElementById('category-filter').value;
+            const statusFilter = document.getElementById('status-filter').value;
+            
+            document.querySelectorAll('.item-card').forEach(card => {
+                const title = card.querySelector('.item-title').textContent.toLowerCase();
+                const category = card.querySelector('.item-category-badge').textContent.toLowerCase();
+                const status = card.querySelector('.status-badge').textContent.toLowerCase();
+                
+                const matchesSearch = title.includes(searchTerm);
+                const matchesCategory = !categoryFilter || category === categoryFilter;
+                const matchesStatus = !statusFilter || status.includes(statusFilter);
+                
+                if (matchesSearch && matchesCategory && matchesStatus) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        // Action functions
+        function approveItem(itemId) {
+            if (confirm('Are you sure you want to approve this item?')) {
+                // API call would go here
+                console.log('Approving item:', itemId);
+                // Update UI to show approved status
+                updateItemStatus(itemId, 'approved');
+            }
+        }
+
+        function rejectItem(itemId) {
+            if (confirm('Are you sure you want to reject this item?')) {
+                // API call would go here
+                console.log('Rejecting item:', itemId);
+                // Update UI to show rejected status
+                updateItemStatus(itemId, 'rejected');
+            }
+        }
+
+        function viewDetails(itemId) {
+            // This would open a modal or navigate to details page
+            console.log('Viewing details for item:', itemId);
+            alert('Item details would be shown here');
+        }
+
+        function updateItemStatus(itemId, status) {
+            // This would update the item's status in the UI
+            console.log('Updating item', itemId, 'to status:', status);
+            // Here you would update the status badge and possibly move the item
+        }
+
+        // Logout functionality
+        document.querySelector('.logout-btn').addEventListener('click', () => {
+            if (confirm('Are you sure you want to logout?')) {
+                window.location.href = 'login.html';
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,107 @@
+.landing-page {
+  overflow-x: hidden;
+}
+
+/* Hero Section */
+.hero-section {
+  background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
+              #2c3e50; /* Fallback color */
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+  position: relative;
+  padding: 2rem 0;
+}
+
+@media (min-width: 768px) {
+  .hero-section {
+    min-height: 90vh;
+  }
+}
+
+/* Step Icons */
+.step-icon {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background-color: #e9f5ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.5rem;
+  transition: transform 0.3s;
+}
+
+.step-icon:hover {
+  transform: scale(1.1);
+  background-color: #d0e8ff;
+}
+
+.step-icon i {
+  color: #0d6efd;
+}
+
+/* Item Cards */
+.item-card {
+  transition: transform 0.3s, box-shadow 0.3s;
+  height: 100%;
+}
+
+.item-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+.placeholder-image {
+  width: 100%;
+  height: 200px;
+  background-color: #f8f9fa;
+  border-radius: 4px;
+  position: relative;
+  overflow: hidden;
+}
+
+.placeholder-image::after {
+  content: "Item Image";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #adb5bd;
+  font-size: 0.9rem;
+}
+
+/* Benefits Section */
+.benefits-image {
+  height: 300px;
+  background-color: #f0f8ff;
+  border-radius: 10px;
+  position: relative;
+}
+
+.benefits-image::after {
+  content: "Sustainability Illustration";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #adb5bd;
+  font-size: 1rem;
+  text-align: center;
+}
+
+.benefits-list {
+  list-style: none;
+  padding-left: 0;
+}
+
+.benefits-list li {
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+}
+
+/* Testimonials */
+.testimonial {
+  background-color: rgba(255, 255, 255, 0.1);
+  height: 100%;
+}
