@@ -1,276 +1,384 @@
-import React, { useState } from 'react';
-import { Search, ChevronLeft, ChevronRight, Heart, Share2, MapPin, Clock, Star, User, Package, Shield } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { Container, Row, Col, Card, Button, Badge, Modal, Form, Alert } from 'react-bootstrap';
 
-const ProductDetailPage = () => {
-  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
-  const [isWishlisted, setIsWishlisted] = useState(false);
+const ItemDetailPage = () => {
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const [item, setItem] = useState(null);
+  const [showSwapModal, setShowSwapModal] = useState(false);
+  const [showRedeemModal, setShowRedeemModal] = useState(false);
+  const [swapMessage, setSwapMessage] = useState('');
+  const [selectedItem, setSelectedItem] = useState('');
+  const [user, setUser] = useState(null);
+  const [alert, setAlert] = useState({ show: false, message: '', variant: 'success' });
 
-  const product = {
-    id: 1,
-    title: "Vintage Leather Jacket",
-    description: "Beautiful vintage leather jacket in excellent condition. This classic piece features genuine leather construction with a timeless design that never goes out of style. Perfect for casual wear or adding an edge to any outfit.",
-    fullDescription: "This stunning vintage leather jacket is a true wardrobe staple. Crafted from premium genuine leather, it features a classic biker-style design with asymmetrical zip closure, multiple pockets, and adjustable waist belt. The jacket has a soft, supple feel and beautiful patina that only improves with age.\n\nDetails:\n- Material: 100% Genuine Leather\n- Color: Rich Brown\n- Size: Medium (fits true to size)\n- Condition: Excellent (9/10)\n- Brand: Classic Vintage\n- Era: 1990s\n- Care: Professional leather cleaning recommended\n\nThis jacket has been stored in a smoke-free environment and comes from a pet-free home. It's perfect for anyone looking to add a timeless piece to their wardrobe.",
-    images: [
-      "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=600&h=600&fit=crop",
-      "https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=600&h=600&fit=crop",
-      "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=600&h=600&fit=crop",
-      "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=600&h=600&fit=crop&sat=-100"
-    ],
-    pointsRequired: 150,
-    availability: "available",
-    condition: "Excellent",
-    category: "Fashion",
-    tags: ["vintage", "leather", "jacket", "brown", "medium"],
-    uploadedDate: "2024-01-15",
-    uploader: {
-      name: "Sarah Johnson",
-      avatar: "https://images.unsplash.com/photo-1494790108755-2616b612b890?w=150&h=150&fit=crop&crop=face",
-      rating: 4.8,
-      totalItems: 45,
-      joinedDate: "2023-03-15",
-      verified: true,
-      location: "New York, NY"
+  useEffect(() => {
+    // Get user data
+    const userData = localStorage.getItem('user');
+    if (userData) {
+      setUser(JSON.parse(userData));
     }
-  };
 
-  const previousListings = [
-    { id: 1, title: "Vintage Camera", image: "https://images.unsplash.com/photo-1502920917128-1aa500764cbd?w=300&h=200&fit=crop" },
-    { id: 2, title: "Designer Handbag", image: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=300&h=200&fit=crop" },
-    { id: 3, title: "Leather Boots", image: "https://images.unsplash.com/photo-1544966503-7cc5ac882d5c?w=300&h=200&fit=crop" },
-    { id: 4, title: "Wooden Guitar", image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=300&h=200&fit=crop" },
+    // Mock item data - in real app, this would fetch from API
+    const mockItem = {
+      id: parseInt(id),
+      title: "Designer Denim Jacket",
+      description: "This vintage Levi's denim jacket is in excellent condition with minimal signs of wear. Features classic button closure, chest pockets, and that perfectly broken-in feel that only comes with time. Perfect for layering or wearing as a statement piece. Originally purchased for $180, this jacket has been gently worn and cared for.",
+      category: "Jackets",
+      type: "Casual",
+      size: "M",
+      condition: "Excellent",
+      points: 85,
+      uploader: {
+        name: "Sarah M.",
+        location: "New York, NY",
+        rating: 4.8,
+        totalSwaps: 23
+      },
+      dateAdded: "2025-01-12",
+      images: ["jacket1.jpg", "jacket2.jpg", "jacket3.jpg"],
+      tags: ["vintage", "denim", "casual", "levi's"],
+      measurements: {
+        chest: "42 inches",
+        length: "25 inches",
+        sleeve: "24 inches"
+      },
+      material: "100% Cotton Denim",
+      careInstructions: "Machine wash cold, hang dry",
+      originalPrice: "$180",
+      reasonForSwapping: "Doesn't fit my style anymore",
+      availability: "Available"
+    };
+    setItem(mockItem);
+  }, [id]);
 
+  // Mock user's items for swap
+  const userItems = [
+    { id: 1, title: "Wool Winter Coat", category: "Coats" },
+    { id: 2, title: "Leather Ankle Boots", category: "Footwear" },
+    { id: 3, title: "Silk Evening Blouse", category: "Tops" }
   ];
 
-  const getAvailabilityColor = (status) => {
-    switch (status) {
-      case 'available': return 'text-green-600 bg-green-50';
-      case 'pending': return 'text-yellow-600 bg-yellow-50';
-      case 'unavailable': return 'text-red-600 bg-red-50';
-      default: return 'text-gray-600 bg-gray-50';
+  const handleSwapRequest = () => {
+    if (!user) {
+      navigate('/login');
+      return;
     }
+    setShowSwapModal(true);
   };
 
-  const getAvailabilityText = (status) => {
-    switch (status) {
-      case 'available': return 'Available for Swap';
-      case 'pending': return 'Swap Pending';
-      case 'unavailable': return 'No Longer Available';
-      default: return 'Unknown';
+  const handleRedeem = () => {
+    if (!user) {
+      navigate('/login');
+      return;
     }
+    if (user.points < item.points) {
+      setAlert({
+        show: true,
+        message: `You need ${item.points - user.points} more points to redeem this item.`,
+        variant: 'warning'
+      });
+      return;
+    }
+    setShowRedeemModal(true);
   };
 
-  const nextImage = () => {
-    setSelectedImageIndex((prev) => 
-      prev === product.images.length - 1 ? 0 : prev + 1
-    );
+  const submitSwapRequest = () => {
+    // Mock API call
+    setAlert({
+      show: true,
+      message: 'Swap request sent successfully! The owner will be notified.',
+      variant: 'success'
+    });
+    setShowSwapModal(false);
+    setSwapMessage('');
+    setSelectedItem('');
   };
 
-  const prevImage = () => {
-    setSelectedImageIndex((prev) => 
-      prev === 0 ? product.images.length - 1 : prev - 1
-    );
+  const confirmRedeem = () => {
+    // Mock API call - deduct points
+    const updatedUser = { ...user, points: user.points - item.points };
+    localStorage.setItem('user', JSON.stringify(updatedUser));
+    setUser(updatedUser);
+    
+    setAlert({
+      show: true,
+      message: `Successfully redeemed ${item.title} for ${item.points} points!`,
+      variant: 'success'
+    });
+    setShowRedeemModal(false);
   };
+
+  const getConditionColor = (condition) => {
+    const colors = {
+      'Like New': 'success',
+      'Excellent': 'primary',
+      'Very Good': 'info',
+      'Good': 'warning',
+      'Fair': 'secondary'
+    };
+    return colors[condition] || 'secondary';
+  };
+
+  if (!item) {
+    return (
+      <Container className="py-5 text-center">
+        <div className="spinner-border" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </div>
+      </Container>
+    );
+  }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="bg-white shadow-sm border-b">
-        <div className="max-w-7xl mx-auto p-4">
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center gap-4">
-              <div className="px-4 py-2 bg-gray-100 rounded-lg text-sm font-medium">
-                Screen 7
+    <Container className="py-4">
+      {alert.show && (
+        <Alert 
+          variant={alert.variant} 
+          onClose={() => setAlert({ ...alert, show: false })} 
+          dismissible
+          className="mb-4"
+        >
+          {alert.message}
+        </Alert>
+      )}
+
+      <Row>
+        {/* Image Gallery */}
+        <Col lg={6}>
+          <Card className="mb-4">
+            <div className="position-relative">
+              <div className="item-main-image bg-light d-flex align-items-center justify-content-center" style={{height: '400px'}}>
+                <i className="bi-image text-muted" style={{fontSize: '4rem'}}></i>
               </div>
-              <h1 className="text-xl font-semibold">Product Detail Page</h1>
+              <div className="position-absolute top-0 end-0 m-3">
+                <Badge bg={getConditionColor(item.condition)} className="fs-6">
+                  {item.condition}
+                </Badge>
+              </div>
             </div>
-            <div className="w-8 h-8 bg-gray-200 rounded-full"></div>
-          </div>
-          
-          <div className="relative">
-            <input
-              type="text"
-              placeholder="Search products..."
-              className="w-full px-4 py-3 pr-12 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-            <Search className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-          </div>
-        </div>
-      </div>
-
-      <div className="max-w-7xl mx-auto p-6">
-        <div className="bg-white rounded-lg shadow-sm">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 p-6">
-            <div className="space-y-4">
-              <div className="relative aspect-square bg-gray-100 rounded-lg overflow-hidden">
-                <img 
-                  src={product.images[selectedImageIndex]} 
-                  alt={product.title}
-                  className="w-full h-full object-cover"
-                />
-                
-                <button 
-                  onClick={prevImage}
-                  className="absolute left-3 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white p-2 rounded-full shadow-md transition-all"
-                >
-                  <ChevronLeft className="w-5 h-5" />
-                </button>
-                <button 
-                  onClick={nextImage}
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white p-2 rounded-full shadow-md transition-all"
-                >
-                  <ChevronRight className="w-5 h-5" />
-                </button>
-
-                <div className="absolute bottom-3 right-3 bg-black/50 text-white px-3 py-1 rounded-full text-sm">
-                  {selectedImageIndex + 1} / {product.images.length}
-                </div>
-              </div>
-
-              <div className="grid grid-cols-4 gap-2">
-                {product.images.map((image, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setSelectedImageIndex(index)}
-                    className={`aspect-square rounded-lg overflow-hidden border-2 transition-all ${
-                      selectedImageIndex === index ? 'border-blue-500' : 'border-gray-200 hover:border-gray-300'
-                    }`}
-                  >
-                    <img src={image} alt={`${product.title} ${index + 1}`} className="w-full h-full object-cover" />
-                  </button>
+            <Card.Body>
+              <Row className="g-2">
+                {item.images.map((img, index) => (
+                  <Col key={index} xs={4}>
+                    <div className="thumbnail bg-light d-flex align-items-center justify-content-center" style={{height: '80px', cursor: 'pointer'}}>
+                      <i className="bi-image text-muted"></i>
+                    </div>
+                  </Col>
                 ))}
-              </div>
-            </div>
+              </Row>
+            </Card.Body>
+          </Card>
+        </Col>
 
-            <div className="space-y-6">
-              <div>
-                <div className="flex items-center justify-between mb-2">
-                  <h1 className="text-3xl font-bold text-gray-900">{product.title}</h1>
-                  <div className="flex items-center gap-2">
-                    <button 
-                      onClick={() => setIsWishlisted(!isWishlisted)}
-                      className={`p-2 rounded-full transition-all ${
-                        isWishlisted ? 'bg-red-50 text-red-600' : 'bg-gray-100 hover:bg-gray-200'
-                      }`}
-                    >
-                      <Heart className={`w-5 h-5 ${isWishlisted ? 'fill-current' : ''}`} />
-                    </button>
-                    <button className="p-2 rounded-full bg-gray-100 hover:bg-gray-200 transition-all">
-                      <Share2 className="w-5 h-5" />
-                    </button>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-3 mb-4">
-                  <span className={`px-3 py-1 rounded-full text-sm font-medium ${getAvailabilityColor(product.availability)}`}>
-                    {getAvailabilityText(product.availability)}
-                  </span>
-                  <span className="text-sm text-gray-500">
-                    Condition: <span className="font-medium">{product.condition}</span>
-                  </span>
-                </div>
-
-                <div className="flex flex-wrap gap-2 mb-4">
-                  {product.tags.map((tag, index) => (
-                    <span key={index} className="px-3 py-1 bg-blue-50 text-blue-600 text-sm rounded-full">
-                      #{tag}
-                    </span>
-                  ))}
-                </div>
-              </div>
-
-              <div className="bg-gray-50 rounded-lg p-4">
-                <h3 className="font-semibold mb-3">Description</h3>
-                <p className="text-gray-700 leading-relaxed">{product.description}</p>
-              </div>
-
-              <div className="bg-gray-50 rounded-lg p-4">
-                <h3 className="font-semibold mb-3">Full Item Description</h3>
-                <div className="text-gray-700 leading-relaxed whitespace-pre-line">
-                  {product.fullDescription}
-                </div>
-              </div>
-
-              <div className="bg-gray-50 rounded-lg p-4">
-                <h3 className="font-semibold mb-3">Uploader Information</h3>
-                <div className="flex items-center gap-3">
-                  <img 
-                    src={product.uploader.avatar} 
-                    alt={product.uploader.name}
-                    className="w-12 h-12 rounded-full object-cover"
-                  />
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2">
-                      <h4 className="font-medium">{product.uploader.name}</h4>
-                      {product.uploader.verified && (
-                        <Shield className="w-4 h-4 text-blue-600" />
-                      )}
-                    </div>
-                    <div className="flex items-center gap-4 text-sm text-gray-600">
-                      <div className="flex items-center gap-1">
-                        <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                        <span>{product.uploader.rating}</span>
-                      </div>
-                      <div className="flex items-center gap-1">
-                        <Package className="w-4 h-4" />
-                        <span>{product.uploader.totalItems} items</span>
-                      </div>
-                      <div className="flex items-center gap-1">
-                        <MapPin className="w-4 h-4" />
-                        <span>{product.uploader.location}</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="space-y-3">
-                <button 
-                  className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-                  disabled={product.availability !== 'available'}
-                >
-                  Swap Request
-                </button>
-                <button 
-                  className="w-full bg-purple-600 hover:bg-purple-700 text-white font-medium py-3 px-6 rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-                  disabled={product.availability !== 'available'}
-                >
-                  Redeem via Points ({product.pointsRequired} Points)
-                </button>
-              </div>
-
-              <div className="text-sm text-gray-500 border-t pt-4">
-                <div className="flex items-center gap-1 mb-1">
-                  <Clock className="w-4 h-4" />
-                  <span>Listed on {new Date(product.uploadedDate).toLocaleDateString()}</span>
-                </div>
-                <div className="flex items-center gap-1">
-                  <User className="w-4 h-4" />
-                  <span>Member since {new Date(product.uploader.joinedDate).toLocaleDateString()}</span>
-                </div>
-              </div>
+        {/* Item Details */}
+        <Col lg={6}>
+          <div className="mb-4">
+            <h1 className="mb-2">{item.title}</h1>
+            <div className="d-flex align-items-center mb-3">
+              <span className="text-primary fw-bold fs-4 me-3">
+                <i className="bi-coin me-1"></i>{item.points} points
+              </span>
+              <Badge bg="light" text="dark" className="me-2">{item.category}</Badge>
+              <Badge bg="light" text="dark">{item.type}</Badge>
             </div>
           </div>
 
-          <div className="border-t p-6">
-            <h3 className="text-lg font-semibold mb-6">Previous Listings:</h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              {previousListings.map((listing) => (
-                <div key={listing.id} className="group cursor-pointer">
-                  <div className="bg-gray-100 rounded-lg overflow-hidden h-48 hover:shadow-md transition-all">
-                    <img
-                      src={listing.image}
-                      alt={listing.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform"
-                    />
+          {/* Key Details */}
+          <Card className="mb-4">
+            <Card.Body>
+              <h5 className="card-title">Item Details</h5>
+              <Row>
+                <Col sm={6}>
+                  <div className="mb-2">
+                    <strong>Size:</strong> {item.size}
                   </div>
-                  <p className="text-sm text-gray-700 mt-2 font-medium">{listing.title}</p>
-                </div>
-              ))}
-            </div>
+                  <div className="mb-2">
+                    <strong>Condition:</strong> {item.condition}
+                  </div>
+                  <div className="mb-2">
+                    <strong>Material:</strong> {item.material}
+                  </div>
+                </Col>
+                <Col sm={6}>
+                  <div className="mb-2">
+                    <strong>Original Price:</strong> {item.originalPrice}
+                  </div>
+                  <div className="mb-2">
+                    <strong>Availability:</strong> 
+                    <Badge bg="success" className="ms-2">{item.availability}</Badge>
+                  </div>
+                  <div className="mb-2">
+                    <strong>Added:</strong> {new Date(item.dateAdded).toLocaleDateString()}
+                  </div>
+                </Col>
+              </Row>
+            </Card.Body>
+          </Card>
+
+          {/* Action Buttons */}
+          <div className="d-grid gap-2 mb-4">
+            <Button 
+              variant="primary" 
+              size="lg" 
+              onClick={handleSwapRequest}
+              disabled={item.availability !== 'Available'}
+            >
+              <i className="bi-arrow-repeat me-2"></i>
+              Request Swap
+            </Button>
+            <Button 
+              variant="outline-primary" 
+              size="lg" 
+              onClick={handleRedeem}
+              disabled={item.availability !== 'Available' || (user && user.points < item.points)}
+            >
+              <i className="bi-coin me-2"></i>
+              Redeem with Points
+              {user && user.points < item.points && (
+                <small className="d-block">Need {item.points - user.points} more points</small>
+              )}
+            </Button>
           </div>
-        </div>
-      </div>
-    </div>
+
+          {/* Uploader Info */}
+          <Card className="mb-4">
+            <Card.Body>
+              <h5 className="card-title">About the Owner</h5>
+              <div className="d-flex align-items-center">
+                <div className="avatar bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-3" style={{width: '50px', height: '50px'}}>
+                  {item.uploader.name.charAt(0)}
+                </div>
+                <div>
+                  <h6 className="mb-1">{item.uploader.name}</h6>
+                  <div className="text-muted small">
+                    <i className="bi-geo-alt me-1"></i>{item.uploader.location}
+                  </div>
+                  <div className="text-muted small">
+                    <i className="bi-star-fill text-warning me-1"></i>
+                    {item.uploader.rating} • {item.uploader.totalSwaps} swaps
+                  </div>
+                </div>
+              </div>
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
+
+      {/* Full Description */}
+      <Row className="mt-4">
+        <Col>
+          <Card>
+            <Card.Body>
+              <h5 className="card-title">Description</h5>
+              <p className="card-text">{item.description}</p>
+              
+              <h6 className="mt-4">Measurements</h6>
+              <Row>
+                <Col sm={4}>
+                  <div><strong>Chest:</strong> {item.measurements.chest}</div>
+                </Col>
+                <Col sm={4}>
+                  <div><strong>Length:</strong> {item.measurements.length}</div>
+                </Col>
+                <Col sm={4}>
+                  <div><strong>Sleeve:</strong> {item.measurements.sleeve}</div>
+                </Col>
+              </Row>
+
+              <h6 className="mt-4">Care Instructions</h6>
+              <p>{item.careInstructions}</p>
+
+              <h6 className="mt-4">Reason for Swapping</h6>
+              <p className="mb-0">{item.reasonForSwapping}</p>
+
+              {item.tags.length > 0 && (
+                <>
+                  <h6 className="mt-4">Tags</h6>
+                  <div>
+                    {item.tags.map((tag, index) => (
+                      <Badge key={index} bg="light" text="dark" className="me-2">
+                        #{tag}
+                      </Badge>
+                    ))}
+                  </div>
+                </>
+              )}
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
+
+      {/* Swap Request Modal */}
+      <Modal show={showSwapModal} onHide={() => setShowSwapModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Request Item Swap</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form>
+            <Form.Group className="mb-3">
+              <Form.Label>Select an item to offer in exchange</Form.Label>
+              <Form.Select value={selectedItem} onChange={(e) => setSelectedItem(e.target.value)}>
+                <option value="">Choose from your items...</option>
+                {userItems.map((userItem) => (
+                  <option key={userItem.id} value={userItem.id}>
+                    {userItem.title} ({userItem.category})
+                  </option>
+                ))}
+              </Form.Select>
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label>Message to owner (optional)</Form.Label>
+              <Form.Control
+                as="textarea"
+                rows={3}
+                value={swapMessage}
+                onChange={(e) => setSwapMessage(e.target.value)}
+                placeholder="Tell the owner why you'd like to swap..."
+              />
+            </Form.Group>
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowSwapModal(false)}>
+            Cancel
+          </Button>
+          <Button 
+            variant="primary" 
+            onClick={submitSwapRequest}
+            disabled={!selectedItem}
+          >
+            Send Swap Request
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      {/* Redeem Confirmation Modal */}
+      <Modal show={showRedeemModal} onHide={() => setShowRedeemModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Confirm Redemption</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <p>Are you sure you want to redeem <strong>{item.title}</strong> for <strong>{item.points} points</strong>?</p>
+          {user && (
+            <div className="alert alert-info">
+              <div>Current balance: {user.points} points</div>
+              <div>After redemption: {user.points - item.points} points</div>
+            </div>
+          )}
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowRedeemModal(false)}>
+            Cancel
+          </Button>
+          <Button variant="primary" onClick={confirmRedeem}>
+            Confirm Redemption
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    </Container>
   );
 };
 
-export default ProductDetailPage;
+export default ItemDetailPage;
