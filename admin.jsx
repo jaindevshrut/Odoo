@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { useState } from 'react';
-
+//admin
 const clothesVariants = (duration, delay) => ({
   initial: { y: '100vh', opacity: 0 },
   animate: {
