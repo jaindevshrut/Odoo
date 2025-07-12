@@ -1,6 +1,7 @@
 import React from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
-import { Link } from 'react-router-dom';  // ADD THIS IMPORT
+import { Link } from 'react-router-dom'; 
+ // nbjk ADD THIS IMPORT
 
 const Footer = () => {
   return (
