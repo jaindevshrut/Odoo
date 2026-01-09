@@ -160,16 +160,21 @@ From `Backend/notes.md`, the following key learnings are documented:
    - Repository named "Odoo" but contains "ReWear" project
    - Consider renaming for clarity
 
-2. **Documentation**
+2. **Variable Naming Typo**
+   - Environment variable `CLODINARY_API_KEY` has a typo (should be `CLOUDINARY_API_KEY`)
+   - This typo exists in `Backend/src/utils/cloudinary.js` line 6
+   - Should be fixed for consistency and professionalism
+
+3. **Documentation**
    - Some notes in Hindi (mixing languages)
    - Could benefit from more inline code comments
    - API documentation could be more comprehensive
 
-3. **Code Organization**
-   - Temporary uploaded files present in repo (`Backend/public/temp/`)
-   - Should be cleaned or excluded via .gitignore
+4. **Code Organization**
+   - Temporary uploaded files were present in repo (`Backend/public/temp/`)
+   - Now cleaned and .gitignore updated ✅
 
-4. **Frontend-Backend Integration**
+5. **Frontend-Backend Integration**
    - No clear documentation on how ReWear frontend connects to Backend
    - API endpoint documentation missing for frontend consumption
 

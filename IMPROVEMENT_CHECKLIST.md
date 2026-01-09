@@ -2,9 +2,11 @@
 
 ## Priority 1: Critical Improvements
 
-- [ ] Add `.env.example` file with all required environment variables
-- [ ] Remove temporary files from `Backend/public/temp/`
-- [ ] Update `.gitignore` to exclude temporary upload files
+- [ ] Fix typo in environment variable name: `CLODINARY_API_KEY` → `CLOUDINARY_API_KEY` in `Backend/src/utils/cloudinary.js`
+- [ ] Update corresponding .env.example after fixing the typo
+- [ ] Add `.env.example` file with all required environment variables ✅
+- [x] Remove temporary files from `Backend/public/temp/` ✅
+- [x] Update `.gitignore` to exclude temporary upload files ✅
 - [ ] Add input validation for all API endpoints
 - [ ] Implement file upload size and type restrictions for security
 
@@ -97,11 +99,12 @@
 
 1. ✅ Create this checklist
 2. ✅ Add assignment review document
-3. [ ] Add .env.example file
-4. [ ] Clean up temporary files
-5. [ ] Update README with proper project name
-6. [ ] Add LICENSE file
-7. [ ] Create CONTRIBUTING.md guide
+3. ✅ Add .env.example file
+4. ✅ Clean up temporary files
+5. ✅ Update README with proper project name
+6. ✅ Add LICENSE file
+7. ✅ Create CONTRIBUTING.md guide
+8. [ ] Fix CLODINARY typo in cloudinary.js
 
 ---
 
