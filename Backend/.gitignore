@@ -118,3 +118,7 @@ dist
 .pnp.*
 
 # End of https://mrkandreev.name/snippets/gitignore-generator/#Node
+
+# Temporary uploaded files (keep the directory but not the uploads)
+public/temp/*
+!public/temp/.gitkeep
