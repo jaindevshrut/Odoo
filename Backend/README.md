@@ -24,8 +24,8 @@ Learning backend by creating a YouTube-like website.
 
 1. Clone the repository:
     ```sh
-    git clone https://github.com/jaindevshrut/Backend.git
-    cd Backend
+    git clone https://github.com/jaindevshrut/Odoo.git
+    cd Odoo/Backend
     ```
 
 2. Install dependencies:
@@ -34,13 +34,21 @@ Learning backend by creating a YouTube-like website.
     ```
 
 3. Set up environment variables:
-    - Create a `.env` file in the root directory and add the following:
-        ```env
-        DB_HOST=your_database_host
-        DB_USER=your_database_user
-        DB_PASS=your_database_password
-        etc.
+    - Copy the `.env.example` file to `.env`:
+        ```sh
+        cp .env.example .env
         ```
+    - Edit the `.env` file and fill in your actual values:
+        - `MONGODB_URL`: Your MongoDB connection string
+        - `PORT`: Server port (default: 8000)
+        - `CORS_ORIGIN`: Allowed origins for CORS
+        - `ACCESS_TOKEN_SECRET` & `REFRESH_TOKEN_SECRET`: Generate strong random strings
+        - `CLOUDINARY_CLOUD_NAME`, `CLODINARY_API_KEY`, `CLOUDINARY_API_SECRET`: Your Cloudinary credentials
+
+    **Generate Token Secrets:**
+    ```sh
+    node -e "console.log(require('crypto').randomBytes(64).toString('hex'))"
+    ```
 
 4. Start the server:
     ```sh
